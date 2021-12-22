@@ -6,7 +6,7 @@
         <h2>Trang list post</h2>
         <div class="col-md-12">
             <h3>
-                <a class="btn btn-primary" href="#" role="button">Add</a>
+                <a class="btn btn-primary" href="{{ route('post.create') }}" role="button">Create</a>
             </h3>
         </div>
         <table class="table">

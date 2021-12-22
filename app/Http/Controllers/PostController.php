@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
     private $post;
-    public function __construct(Post $post)
+    private $tag;
+    public function __construct(Post $post, Tag $tag)
     {
         $this->post = $post;
+        $this->tag = $tag;
     }
     /**
      * Display a listing of the resource.
@@ -30,7 +35,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $tags = $this->tag->all();
+        return view('post.create', compact('tags'));
     }
 
     /**
@@ -41,7 +47,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            // insert data to posts table
+            $post = $this->post->create([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+            // insert to comments table
+            $post->comments()->create([
+                'content' => $request->comment
+            ]);
+            // insert to post_tag table
+            $post->tags()->attach($request->tags);
+            DB::commit();
+            return redirect()->route('post.index');
+        } catch (\Exception $e) {
+            Log::error('Message: ' . $e->getMessage() . ' Line: ' . $e->getLine());
+            DB::rollBack();
+        }
+        
     }
 
     /**
