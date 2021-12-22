@@ -19,4 +19,8 @@ Route::prefix('post')->group(function () {
     Route::get('insert', 'PostController@insert');
     Route::get('/', 'PostController@index');
 });
+// route cho cmt
+Route::prefix('comment')->group(function () {
+    Route::get('/', 'CommentController@index');
+});
 
