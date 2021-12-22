@@ -16,8 +16,15 @@ Route::get('/', function () {
 });
 // route cho post
 Route::prefix('post')->group(function () {
+
+    // mot nhieu
     Route::get('insert', 'PostController@insert');
     Route::get('/', 'PostController@index');
+
+    // nhieu nhieu
+    Route::get('insert/tags', 'PostController@insertTags');
+    Route::get('update/tags', 'PostController@updateTags');
+    Route::get('tags', 'PostController@getTags');
 });
 // route cho cmt
 Route::prefix('comment')->group(function () {

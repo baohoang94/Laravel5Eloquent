@@ -12,4 +12,8 @@ class Post extends Model
         // tham so thu 2: khoa ngoai mac dinh lay theo ten model viet thuong noi voi _id
         // VD: ten model la Post thi khoa ngoai la post_id
     }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

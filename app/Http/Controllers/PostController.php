@@ -29,4 +29,35 @@ class PostController extends Controller
         $queries = DB::getQueryLog();
         dd($queries);
     }
+    public function insertTags()
+    {
+        // insert
+        $post = Post::find(1);
+        $post->tags()->attach([1,2,3]);
+    }
+    public function updateTags()
+    {
+        // update
+        $post = Post::find(1);
+
+        // cách 1
+        $post->tags()->sync([5,4,3]);
+        // VD: hiện tại bảng post_tag đang có 3 bản ghi có post_id = 1 và tag_id lần lượt là 1, 2, 3
+        // sau khi chạy lệnh trên, các bản ghi có tag_id = 1 và 2 sẽ bị xóa, bản ghi có tag_id = 3 đc giữ nguyên
+        // và thêm mới 2 bản ghi có post_id = 1 và tag_id lần lượt là 4 và 5
+
+        // cách 2
+        // $post->tags()->detach();
+        // $post->tags()->attach([5,4,3]);
+
+        // cách 3: xóa thủ công theo điều kiện sau đó lại thêm thủ công
+    }
+    public function getTags()
+    {
+        // get du lieu
+        $tags = Post::find(1)->tags;
+        // $tags = Post::find(1)->tags()->where('tags.id', 1)->get();
+        // $tags = Post::find(1)->tags()->where('tags.id', 1)->first();
+        dd($tags);
+    }
 }
