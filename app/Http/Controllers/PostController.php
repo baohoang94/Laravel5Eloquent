@@ -88,7 +88,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tags = $this->tag->all();
+        $post = $this->post->find($id);
+        return view('post.edit', compact('post', 'tags'));
     }
 
     /**
@@ -100,7 +102,26 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            // insert data to posts table
+            $this->post->find($id)->update([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+            $post = $this->post->find($id);
+            // insert to comments table
+            $post->comments()->create([
+                'content' => $request->comment
+            ]);
+            // insert to post_tag table
+            $post->tags()->sync($request->tags);
+            DB::commit();
+            return redirect()->route('post.index');
+        } catch (\Exception $e) {
+            Log::error('Message: ' . $e->getMessage() . ' Line: ' . $e->getLine());
+            DB::rollBack();
+        }
     }
 
     /**
