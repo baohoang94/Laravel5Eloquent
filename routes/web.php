@@ -21,6 +21,7 @@ Route::group(['prefix' => 'post'], function () {
     Route::post('/store', 'PostController@store')->name('post.store');
     Route::get('/edit/{id}', 'PostController@edit')->name('post.edit');
     Route::post('/update/{id}', 'PostController@update')->name('post.update');
+    Route::get('/destroy/{id}', 'PostController@destroy')->name('post.destroy');
 });
 Auth::routes();
 

@@ -21,12 +21,12 @@
             <tbody>
                 @foreach ($posts as $postItem)
                     <tr>
-                        <th scope="row">{{ $loop->index }}</th>
+                        <th scope="row">{{ $loop->index + 1 }}</th>
                         <td>{{ $postItem->name }}</td>
                         <td>{{ $postItem->description }}</td>
                         <td>
                             <a class="btn btn-primary" href="{{ route('post.edit', ['id' => $postItem->id]) }}" role="button">Edit</a>
-                            <a class="btn btn-danger" href="#" role="button">Delete</a>
+                            <a class="btn btn-danger" href="{{ route('post.destroy', ['id' => $postItem->id]) }}" role="button">Delete</a>
                             <a class="btn btn-info" href="#" role="button">Show</a>
                         </td>
                     </tr>
